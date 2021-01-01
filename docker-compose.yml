@@ -1,0 +1,39 @@
+version: '3'
+services:
+    client: 
+        build: 
+            dockerfile: Dockerfile
+            context: ./client
+        volumes:
+            - /client/node_modules 
+            - ./client:/client
+
+    admin: 
+        build: 
+            dockerfile: Dockerfile
+            context: ./admin
+        volumes:
+            - /admin/node_modules 
+            - ./admin:/admin
+
+    api:
+        build: 
+            dockerfile: Dockerfile
+            context: ./api
+        volumes:
+            - /api/node_modules 
+            - ./api:/api
+
+
+    nginx:
+        restart: always
+        build: 
+          dockerfile: Dockerfile
+          context: ./controller
+        ports: 
+            - '4000:80'
+        links:
+            - api:api
+            - admin:admin
+            - client:client
+ 
